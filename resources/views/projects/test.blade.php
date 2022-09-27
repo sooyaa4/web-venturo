@@ -2,14 +2,13 @@
 
 @section('content')
 
-
 <div class="container-fluid">
-        <div class="card" style="margin: 2rem 0rem;">
-            <div class="card-header">
-                Venturo - Laporan penjualan tahunan per menu
-            </div>
-            <div class="card-body">
-                <form action="/" method="get">
+    <div class="card" style="margin: 2rem 0rem;">
+        <div class="card-header">
+            Venturo - Laporan penjualan tahunan per menu
+        </div>
+        <div class="card-body">
+            <form action="/" method="get">
                     <div class="row">
                         <div class="col-2">
                             <div class="form-group">
@@ -35,102 +34,106 @@
                             </a>
                         </div>
                     </div>
-                </form>
+            </form>
                 <hr>
-                <div class="table-responsive">
-                    <table class="table table-hover table-bordered" style="margin: 0;">
-                        <thead>
-                            <tr class="table-dark">
-                                <th rowspan="2" style="text-align:center;vertical-align: middle;width: 250px;">Menu</th>
-                                <th colspan="12" style="text-align: center;">Periode Pada {{ $tahun }}
-                                </th>
-                                <th rowspan="2" style="text-align:center;vertical-align: middle;width:75px">Total</th>
-                            </tr>
-                            <tr class="table-dark">
-                                <th style="text-align: center;width: 75px;">Jan</th>
-                                <th style="text-align: center;width: 75px;">Feb</th>
-                                <th style="text-align: center;width: 75px;">Mar</th>
-                                <th style="text-align: center;width: 75px;">Apr</th>
-                                <th style="text-align: center;width: 75px;">Mei</th>
-                                <th style="text-align: center;width: 75px;">Jun</th>
-                                <th style="text-align: center;width: 75px;">Jul</th>
-                                <th style="text-align: center;width: 75px;">Ags</th>
-                                <th style="text-align: center;width: 75px;">Sep</th>
-                                <th style="text-align: center;width: 75px;">Okt</th>
-                                <th style="text-align: center;width: 75px;">Nov</th>
-                                <th style="text-align: center;width: 75px;">Des</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="table-secondary" colspan="14"><b>Makanan</b></td>
-                            </tr>
-                            @foreach ($responsebody as $d )
-                            <tr>
-                                <td>{{ $d->menu}}</td>
-                                @foreach ($responseBody as $d )
-                                <td>{{ $d->total }}</td>
-                                @endforeach
-                                <td style="text-align: right;"><b>665,000</b></td>
-                            </tr>
+
+            <div class="table-responsive">
+                <table class="table table-hover table-bordered" style="margin: 0;">
+                    <thead>
+                        <tr class="table-dark">
+                            <th rowspan="2" style="text-align:center;vertical-align: middle;width: 250px;">Menu</th>
+                            <th colspan="12" style="text-align: center;">Periode Pada {{ $tahun }}</th>
+                            <th rowspan="2" style="text-align:center;vertical-align: middle;width:75px">Total</th>
+                        </tr>
+                        <tr class="table-dark">
+                             @foreach ($namaBulan as $d )
+                                <th style="text-align: center;width: 75px;">{{ $d }}</th>
                             @endforeach
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                            <td class="table-secondary" colspan="14"><b>Makanan</b></td>
+                            </tr>
+                            <?php
+                            $totalperbulan = 0;
+                            $totalpermenu = 0;
+                            $total = 0;
+                            ?>
+                            @foreach ($responsebody as $c )
+                            @if ($c->kategori == 'makanan')
+                            <tr>
+                                <td>{{ $c->menu}}</td>  
+                                @for ($i = 1; $i <= 12; $i++)
+                                    @foreach ($responseBody as $d)
+                                        @if ($c->menu == $d->menu && (Carbon\Carbon::parse($d->tanggal)->format('n')  == $i ))
+                                            <?php
+                                            $totalperbulan += $d->total;
+                                            $totalpermenu += $d->total;
+                                            ?>
+                                        @endif
+                                    @endforeach
+                                    <td style="text-align: right;">{{ $totalperbulan }}</td>
+                                @endfor
+                            <?php
+                                $totalperbulan = 0;
+                            ?>
+                            <td style="text-align: right;"><b> {{$totalpermenu }}</b></td>
+                            </tr>
+                            @endif
+                            @endforeach
+
                             <tr>
                                 <td class="table-secondary" colspan="14"><b>Minuman</b></td>
                             </tr>
-                            @foreach ($responsebody as $d )
-                            <tr>
-                                <td>{{ $d->menu}}</td>
-                                @foreach ($responseBody as $d )
-                                <td>{{ $d->total }}</td>
-                                @endforeach
-                                <td style="text-align: right;"><b>665,000</b></td>
-                            </tr>
+                            @foreach ($responsebody as $c )
+                                @if ($c->kategori == 'minuman')
+                                    <tr>
+                                        <td>{{ $c->menu}}</td>  
+                                            @for ($i = 1; $i <= 12; $i++)
+                                                @foreach ($responseBody as $d)
+                                                    @if ($c->menu == $d->menu && (Carbon\Carbon::parse($d->tanggal)->format('n') == $i))
+                                                        <?php
+                                                        $totalperbulan += $d->total;
+                                                        $totalpermenu += $d->total;
+                                                        ?>
+                                                    @endif
+                                                @endforeach
+                                                <td style="text-align: right;">{{ $totalperbulan }}</td>
+                                            @endfor
+
+                                        <?php
+                                            $total += $totalpermenu;
+                                            $totalperbulan = 0;
+                                        ?>
+
+                                        <td style="text-align: right;"><b>{{$totalpermenu}}</b></td>
+                                    </tr>
+                                 @endif
                             @endforeach
+
                             <tr class="table-dark">
                                 <td><b>Total</b></td>
-                                <td style="text-align: right;">
-                                    <b>469,000</b>
-                                </td>
-                                <td style="text-align: right;">
-                                    <b>605,000</b>
-                                </td>
-                                <td style="text-align: right;">
-                                    <b>350,000</b>
-                                </td>
-                                <td style="text-align: right;">
-                                    <b>604,000</b>
-                                </td>
-                                <td style="text-align: right;">
-                                    <b>257,000</b>
-                                </td>
-                                <td style="text-align: right;">
-                                    <b>464,000</b>
-                                </td>
-                                <td style="text-align: right;">
-                                    <b>228,000</b>
-                                </td>
-                                <td style="text-align: right;">
-                                    <b>303,000</b>
-                                </td>
-                                <td style="text-align: right;">
-                                    <b>229,000</b>
-                                </td>
-                                <td style="text-align: right;">
-                                    <b>169,000</b>
-                                </td>
-                                <td style="text-align: right;">
-                                    <b>157,000</b>
-                                </td>
-                                <td style="text-align: right;">
-                                    <b>130,000</b>
-                                </td>
-                                <td style="text-align: right;"><b>3,965,000</b></td>
+                                @for ($i = 1; $i <= 12; $i++)
+                                    @foreach ($responseBody as $d)
+                                        @if ((Carbon\Carbon::parse($d->tanggal)->format('n')  == $i ))
+                                            <?php
+                                            $totalperbulan += $d->total;
+                                            $totalpermenu += $d->total;
+                                            ?>
+                                        @endif
+                                    @endforeach
+                                    <td style="text-align: right;">{{ $totalperbulan }}
+                                @endfor
+                            <td style="text-align: right;">{{ $totalpermenu }}</td>
                             </tr>
-                        </tbody>
-                    </table>
-                </div>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
+    </div>
 </div>
 
 
