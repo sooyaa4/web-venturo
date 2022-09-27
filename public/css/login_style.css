@@ -1,0 +1,33 @@
+body {
+  font-family: "Montserrat", sans-serif;
+  background-color: #e5e5e5;
+  color: #343a40;
+  font-size: 14px;
+}
+
+.row .navbar .container ul li a {
+  color: #343a40;
+  font-size: 16px;
+}
+
+.form-login .form-floating:focus-within {
+  z-index: 2;
+}
+
+.form-login form input {
+  border-radius: 0px;
+  border-color: #c4c4c4;
+  margin-bottom: -1px;
+}
+
+/* form .row label {
+  color: #343a40;
+} */
+
+form .row a {
+  color: #a23b83;
+}
+
+form .btn {
+  background-color: #a23b83;
+}
