@@ -14,10 +14,9 @@
                         <div class="col-2">
                             <div class="form-group">
                                 <select id="my-select" class="form-control" name="tahun">
-                                    <option value="{{ $tahun }}" selected disabled>{{ $tahun }}</option>
                                     <option value="">Pilih Tahun</option>
-                                    <option value="2021">2021</option>
-                                    <option value="2022">2022</option>
+                                    <option {{old('tahun',$tahun)=="2021"? 'selected':''}} value="2021">2021</option>
+                                    <option {{old('tahun',$tahun)=="2022"? 'selected':''}} value="2022">2022</option>
                                 </select>
                             </div>
                         </div>
@@ -70,7 +69,7 @@
                             <tr>
                                 <td>{{ $d->menu}}</td>
                                 @foreach ($responseBody as $d )
-                                <td>{{ $d->total }}</td>
+                                <td>{{ $d->menu }} {{ $d->total }}</td>
                                 @endforeach
                                 <td style="text-align: right;"><b>665,000</b></td>
                             </tr>

@@ -12,7 +12,7 @@ class TestController extends Controller
     {
         if (request()->tahun) {
             $tahun = $request->get('tahun');
-
+            
             $client = new Client(); //GuzzleHttp\Client
             $url = "http://tes-web.landa.id/intermediate/transaksi?tahun=$tahun";
             $URL = "http://tes-web.landa.id/intermediate/menu";
