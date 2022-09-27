@@ -69,7 +69,7 @@
                             <tr>
                                 <td>{{ $d->menu}}</td>
                                 @foreach ($responseBody as $d )
-                                <td>{{ $d->menu }} {{ $d->total }}</td>
+                                <td>{{ $d->total }}</td>
                                 @endforeach
                                 <td style="text-align: right;"><b>665,000</b></td>
                             </tr>
