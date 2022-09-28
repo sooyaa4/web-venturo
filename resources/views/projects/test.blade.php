@@ -130,7 +130,7 @@
                             $totalpermenu2 = 0;
                             $totalmenuall1 = 0;
                             $totalmenuall1 += $totalpermenu2;
-                            $totalmenuperbulan1 += $totalperbulan2;
+                            // $totalmenuperbulan1 += $totalperbulan2;
                             ?>
                             @foreach ($responsebody as $c )
                             @if ($c->kategori == 'minuman') 
@@ -168,16 +168,21 @@
                                             @for ($i = 1; $i <= 12; $i++)
                                                 @foreach ($responseBody as $d)
                                                     @if ($c->menu == $d->menu && $d->total != null && ((Carbon\Carbon::parse($d->tanggal)->format('n') == $i)))
-                                                            <?php
-                                                                $totalperbulan += $d->total;
-                                                                $totalpermenu += $d->total;
-                                                            ?>          
+                                                        <?php
+                                                            $totalperbulan += $d->total;
+                                                            $totalpermenu += $d->total;
+                                                        ?>  
+                                                    @else
+                                                    <?php
+                                                        $totalperbulan;
+                                                        $totalpermenu;
+                                                    ?>
                                                     @endif
                                                 @endforeach
-                                                @if ($totalperbulan == 0)
-                                                    <td></td>
-                                                @else
+                                                @if ($totalperbulan != null)
                                                     <td style="text-align: right;"><?= $english_format_number = number_format($totalperbulan) ?></td>
+                                                @else
+                                                    <td style="text-align: right;"> </td>                                                
                                                 @endif                                           
                                             @endfor
                                             <?php
