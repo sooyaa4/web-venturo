@@ -53,9 +53,40 @@
                     </thead>
 
                     <tbody>
-                        <tr>
-                            <td class="table-secondary" colspan="14"><b>Makanan</b></td>
-                            </tr>
+                        <?php
+                        $totalmenuperbulan = 0; 
+                        $totalperbulan1 = 0;
+                        $totalpermenu1 = 0;
+                        $totalmenuall = 0;
+                        $totalmenuall += $totalpermenu1;
+                        $totalmenuperbulan += $totalperbulan1;
+                        ?>
+                        @foreach ($responsebody as $c )
+                        @if ($c->kategori == 'makanan') 
+                            @for ($i = 1; $i <= 12; $i++)
+                                @foreach ($responseBody as $d)
+                                    @if ($c->menu == $d->menu && (Carbon\Carbon::parse($d->tanggal)->format('n')  == $i ))
+                                        <?php
+                                        $totalperbulan1 += $d->total;
+                                        $totalpermenu1 += $d->total;      
+                                        $totalmenuperbulan += $d->total;  
+                                        $totalmenuall += $d->total;                              
+                                        ?>
+                                    @endif
+                                @endforeach
+                            @endfor
+                        <?php
+                            $totalperbulan1 = 0;
+                        ?>
+                        @endif
+                        @endforeach
+                    <tr>
+                        <td class="table-secondary" colspan="1"><b>Makanan</b></td>
+                        @for ($i = 1; $i <= 12; $i++)
+                            <td class="table-secondary" style="text-align: right;"><b><?= $english_format_number = number_format($totalmenuperbulan) ?></b></td> 
+                        @endfor
+                        <td class="table-secondary" style="text-align: right;"><b><?= $english_format_number = number_format($totalmenuall) ?></b></td> 
+                    </tr>
                             <?php
                             $totalperbulan = 0;
                             $totalpermenu = 0;
@@ -67,49 +98,99 @@
                                 <td>{{ $c->menu}}</td>  
                                 @for ($i = 1; $i <= 12; $i++)
                                     @foreach ($responseBody as $d)
-                                        @if ($c->menu == $d->menu && (Carbon\Carbon::parse($d->tanggal)->format('n')  == $i ))
+                                        @if ($c->menu == $d->menu && (Carbon\Carbon::parse($d->tanggal)->format('n')  == $i ) && $d->total)
                                             <?php
                                             $totalperbulan += $d->total;
                                             $totalpermenu += $d->total;
                                             ?>
                                         @endif
                                     @endforeach
-                                    <td style="text-align: right;">{{ $totalperbulan }}</td>
+                                     @if ($totalperbulan == 0)
+                                        <td></td>
+                                     @else
+                                        <td style="text-align: right;"><?= $english_format_number = number_format($totalperbulan) ?></td>
+                                    @endif
                                 @endfor
                             <?php
                                 $totalperbulan = 0;
                             ?>
-                            <td style="text-align: right;"><b> {{$totalpermenu }}</b></td>
+                            <td style="text-align: right;"><b><?= $english_format_number = number_format($totalpermenu) ?></b></td>
                             </tr>
+                            <?php
+                            $total += $totalpermenu;
+                            $totalpermenu = 0;
+                            ?>
                             @endif
                             @endforeach
 
-                            <tr>
-                                <td class="table-secondary" colspan="14"><b>Minuman</b></td>
-                            </tr>
+                            <?php
+                            $totalmenuperbulan1 = 0;
+                            $totalperbulan2 = 0;
+                            $totalpermenu2 = 0;
+                            $totalmenuall1 = 0;
+                            $totalmenuall1 += $totalpermenu2;
+                            ?>
+                            @foreach ($responsebody as $c )
+                            @if ($c->kategori == 'minuman') 
+                                @for ($i = 1; $i <= 12; $i++)
+                                    @foreach ($responseBody as $d)
+                                        @if ($c->menu == $d->menu && (Carbon\Carbon::parse($d->tanggal)->format('n')  == $i ))
+                                            <?php
+                                            $totalperbulan2 += $d->total;
+                                            $totalpermenu2 += $d->total;       
+                                            $totalmenuall1 += $d->total;                              
+                                            ?>
+                                        @endif
+                                        @if ($c->menu == $d->menu && (Carbon\Carbon::parse($d->tanggal)->format('n')  == $i ))
+                                            <?php     
+                                            $totalmenuperbulan1 += $totalperbulan2;                             
+                                            ?>
+                                        @endif
+                                    @endforeach
+                                @endfor
+
+                            @endif
+                            @endforeach
+                        <tr>
+                            <td class="table-secondary" colspan="1"><b>Minuman</b></td>
+                            @for ($i = 1; $i <= 12; $i++)
+                                <td class="table-secondary" style="text-align: right;"><b><?= $english_format_number = number_format($totalmenuperbulan1) ?></b></td> 
+                            @endfor
+                            <td class="table-secondary" style="text-align: right;"><b><?= $english_format_number = number_format($totalmenuall1) ?></b></td> 
+                        </tr>
+
+                            <?php
+                            $totalperbulan = 0;
+                            $totalpermenu = 0 ;
+                            ?>
                             @foreach ($responsebody as $c )
                                 @if ($c->kategori == 'minuman')
                                     <tr>
                                         <td>{{ $c->menu}}</td>  
                                             @for ($i = 1; $i <= 12; $i++)
                                                 @foreach ($responseBody as $d)
-                                                    @if ($c->menu == $d->menu && (Carbon\Carbon::parse($d->tanggal)->format('n') == $i))
-                                                        <?php
-                                                        $totalperbulan += $d->total;
-                                                        $totalpermenu += $d->total;
-                                                        ?>
+                                                    @if ($c->menu == $d->menu && $d->total != null && ((Carbon\Carbon::parse($d->tanggal)->format('n') == $i)))
+                                                            <?php
+                                                                $totalperbulan += $d->total;
+                                                                $totalpermenu += $d->total;
+                                                            ?>          
                                                     @endif
                                                 @endforeach
-                                                <td style="text-align: right;">{{ $totalperbulan }}</td>
+                                                @if ($totalperbulan == 0)
+                                                    <td></td>
+                                                @else
+                                                    <td style="text-align: right;"><?= $english_format_number = number_format($totalperbulan) ?></td>
+                                                @endif                                           
                                             @endfor
-
-                                        <?php
-                                            $total += $totalpermenu;
-                                            $totalperbulan = 0;
-                                        ?>
-
-                                        <td style="text-align: right;"><b>{{$totalpermenu}}</b></td>
+                                            <?php
+                                                $totalperbulan = 0;
+                                            ?>
+                                        <td style="text-align: right;"><b><?= $english_format_number = number_format($totalpermenu) ?></b></td>
                                     </tr>
+                                    <?php
+                                        $total += $totalpermenu;
+                                        $totalpermenu = 0;
+                                    ?>
                                  @endif
                             @endforeach
 
@@ -124,9 +205,16 @@
                                             ?>
                                         @endif
                                     @endforeach
-                                    <td style="text-align: right;">{{ $totalperbulan }}
+                                    @if ($totalperbulan == 0)
+                                        <td></td>
+                                    @else
+                                        <td style="text-align: right;"><b><?= $english_format_number = number_format($totalperbulan) ?></b></td>
+                                    @endif  
+                                    <?php
+                                        $totalperbulan = 0;
+                                    ?>
                                 @endfor
-                            <td style="text-align: right;">{{ $totalpermenu }}</td>
+                                <td style="text-align: right;"><b><?= $english_format_number = number_format($totalpermenu) ?></b></td>
                             </tr>
                         </tr>
                     </tbody>

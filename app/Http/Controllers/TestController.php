@@ -13,7 +13,7 @@ class TestController extends Controller
         
         if (request()->tahun) {
 
-            $namaBulan = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            $namaBulan = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Ags', 'Sep', 'Oct', 'Nov', 'Dec'];
             $tahun = $request->get('tahun');
             
             $client = new Client(); //GuzzleHttp\Client
@@ -30,7 +30,7 @@ class TestController extends Controller
 
             $responseBody = json_decode($response->getBody());
             $responsebody = json_decode($RESPONSE->getBody());
-
+        
         return view('projects.test', compact(['responseBody','responsebody','tahun','namaBulan']));
             
         }
