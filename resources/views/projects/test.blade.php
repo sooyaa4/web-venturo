@@ -124,11 +124,13 @@
                             @endforeach
 
                             <?php
+                            $total = 0;
                             $totalmenuperbulan1 = 0;
                             $totalperbulan2 = 0;
                             $totalpermenu2 = 0;
                             $totalmenuall1 = 0;
                             $totalmenuall1 += $totalpermenu2;
+                            $totalmenuperbulan1 += $totalperbulan2;
                             ?>
                             @foreach ($responsebody as $c )
                             @if ($c->kategori == 'minuman') 
@@ -138,19 +140,15 @@
                                             <?php
                                             $totalperbulan2 += $d->total;
                                             $totalpermenu2 += $d->total;       
-                                            $totalmenuall1 += $d->total;                              
-                                            ?>
-                                        @endif
-                                        @if ($c->menu == $d->menu && (Carbon\Carbon::parse($d->tanggal)->format('n')  == $i ))
-                                            <?php     
-                                            $totalmenuperbulan1 += $totalperbulan2;                             
+                                            $totalmenuall1 += $d->total;     
+                                            $totalmenuperbulan1 += $d->total; 
                                             ?>
                                         @endif
                                     @endforeach
                                 @endfor
-
                             @endif
                             @endforeach
+
                         <tr>
                             <td class="table-secondary" colspan="1"><b>Minuman</b></td>
                             @for ($i = 1; $i <= 12; $i++)
